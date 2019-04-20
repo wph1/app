@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="generator.properties"/>
+
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="${mapper.plugin}">
+            <property name="mappers" value="${mapper.Mapper}"/>
+        </plugin>
+
+        <jdbcConnection driverClass="${jdbc.driverClass}"
+                        connectionURL="${jdbc.url}"
+                        userId="${jdbc.username}"
+                        password="${jdbc.password}">
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="${targetModelPackage}" targetProject="${targetJavaProject}"/>
+
+        <sqlMapGenerator targetPackage="${targetXMLPackage}"  targetProject="${targetResourcesProject}"/>
+
+        <javaClientGenerator targetPackage="${targetMapperPackage}" targetProject="${targetJavaProject}" type="XMLMAPPER" />
+
+        <!--<table tableName="switches_new"  domainObjectName="SwitchesNew">
+            <generatedKey column="switches_id" sqlStatement="Mysql" identity="true"/>
+        </table>-->
+
+       <!-- <table tableName="switches_node_connector"  domainObjectName="SwitchesNodeConnector">
+            <generatedKey column="node_connector_id" sqlStatement="Mysql" identity="true"/>
+        </table>-->
+      <!--  <table tableName="switches_dip_data"  domainObjectName="SwitchesDipData">
+            <generatedKey column="dip_data_id" sqlStatement="Mysql" identity="true"/>
+        </table>-->
+       <!-- <table tableName="flow_table"  domainObjectName="FlowTable">
+            <generatedKey column="flow_table_id" sqlStatement="Mysql" identity="true"/>
+        </table>-->
+        <!--<table tableName="flow_table_details"  domainObjectName="FlowTableDetails">
+            <generatedKey column="flow_table_details_id" sqlStatement="Mysql" identity="true"/>
+        </table>-->
+       <!-- <table tableName="mtd_dynamic_port"  domainObjectName="MtdDynamicPort">
+            <generatedKey column="dynamicport_id" sqlStatement="Mysql" identity="true"/>
+        </table>-->
+        <table tableName="doctor_advice"  domainObjectName="DoctorAdvice">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekcattle.mapper.app.UserMapper">
+  <resultMap id="BaseResultMap" type="com.geekcattle.model.app.User">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="department" jdbcType="VARCHAR" property="department" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="ins_time" jdbcType="TIMESTAMP" property="insTime" />
+    <result column="card" jdbcType="VARCHAR" property="card" />
+  </resultMap>
+</mapper>

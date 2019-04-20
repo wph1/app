@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekcattle.mapper.app.PatientMapper">
+  <resultMap id="BaseResultMap" type="com.geekcattle.model.app.Patient">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="ins_time" jdbcType="TIMESTAMP" property="insTime" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="card" jdbcType="VARCHAR" property="card" />
+    <result column="department" jdbcType="INTEGER" property="department" />
+  </resultMap>
+
+  <select id="selectPatientCase" resultType="Map">
+             SELECT
+              P.`name`,
+              P.age,
+              P.card,
+              CASE P.sex
+            WHEN 0 THEN
+              '女'
+            WHEN 1 THEN
+              '男'
+            ELSE
+              '无信息'
+            END AS sex,
+            C.doctor_id ,
+            C.nurse_id,
+            C.case_mark,
+            C.ins_time,
+            C.state
+            FROM
+              patient P
+            LEFT JOIN cases C ON C.patient_id = P.id
+            WHERE
+              1 = 1
+     <if test="doctorId != null and doctorId != ''">
+       AND C.doctor_id = #{doctorId}
+      </if>
+    <if test="nurseId != null and nurseId != ''">
+      AND C.nurse_id = #{nurseId}
+    </if>
+    <if test="nurseIdList != null and nurseIdList.size()>0">
+      AND C.nurse_id in
+      <foreach collection="list" open="(" close=")" separator="," item="item">
+        #{item}
+      </foreach>
+
+    </if>
+
+        ORDER BY
+              C.ins_time DESC
+  </select>
+</mapper>
