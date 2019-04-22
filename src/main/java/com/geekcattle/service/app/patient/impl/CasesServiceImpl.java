@@ -93,7 +93,7 @@ public class CasesServiceImpl implements CasesService {
 //        PageHelper.offsetPage(patient.getOffset(), patient.getLimit());
         PageHelper.startPage(patient.getPageNums(), patient.getPageSizes());
         Example example = new Example(Case.class);
-        example.createCriteria().andCondition("patient_id",patient.getId());
+        example.createCriteria().andCondition("patient_id=",patient.getId());
         return caseMapper.selectByExample(example);
     }
 }

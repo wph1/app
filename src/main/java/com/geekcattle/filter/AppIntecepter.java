@@ -2,7 +2,10 @@ package com.geekcattle.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.geekcattle.model.app.Patient;
 import com.geekcattle.model.app.User;
+import com.geekcattle.util.Base64Utils;
+import com.geekcattle.util.EncryptUtil;
 import com.geekcattle.util.MD5Util;
 import com.geekcattle.util.UserThreadLocal;
 import org.slf4j.Logger;
@@ -29,10 +32,9 @@ public class AppIntecepter implements HandlerInterceptor {
         String authorization = req.getHeader("Authorization");
         log.info("拿到token==> "+authorization);
         if(authorization!=null){
-            log.info("解析后的token==> "+MD5Util.convertMD5(authorization));
-
+            log.info("解析后的token==> "+ Base64Utils.decrypt(authorization));
 //            ThreadLocal<User> threadLocal = new ThreadLocal<User>();
-            User user = JSON.parseObject(MD5Util.convertMD5(authorization), User.class);
+            User user = JSON.parseObject(Base64Utils.decrypt(authorization), User.class);
             UserThreadLocal.set(user);
         }
         return true;

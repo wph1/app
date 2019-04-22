@@ -3,9 +3,7 @@ package com.geekcattle.filter;
 import com.alibaba.fastjson.JSON;
 import com.geekcattle.model.app.Patient;
 import com.geekcattle.model.app.User;
-import com.geekcattle.util.MD5Util;
-import com.geekcattle.util.PatientThreadLocal;
-import com.geekcattle.util.UserThreadLocal;
+import com.geekcattle.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -30,10 +28,9 @@ public class AppPatientIntecepter implements HandlerInterceptor {
         String authorization = req.getHeader("Authorization");
         log.info("拿到token==> "+authorization);
         if(authorization!=null){
-            log.info("解析后的token==> "+MD5Util.convertMD5(authorization));
-
+            log.info("解析后的token==> "+ Base64Utils.decrypt(authorization));
 //            ThreadLocal<User> threadLocal = new ThreadLocal<User>();
-            Patient user = JSON.parseObject(MD5Util.convertMD5(authorization), Patient.class);
+            Patient user = JSON.parseObject(Base64Utils.decrypt(authorization), Patient.class);
            PatientThreadLocal.set(user);
         }
         return true;

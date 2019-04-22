@@ -8,9 +8,7 @@ import com.geekcattle.model.app.User;
 import com.geekcattle.service.app.patient.CasesService;
 import com.geekcattle.service.app.patient.PatientService;
 import com.geekcattle.service.app.user.UserService;
-import com.geekcattle.util.MD5Util;
-import com.geekcattle.util.PatientThreadLocal;
-import com.geekcattle.util.ReturnUtil;
+import com.geekcattle.util.*;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -45,8 +43,9 @@ public class PatientController {
     public ModelMap login(Patient patient){
         Patient u = patientService.getPatientByNameAndPwd(patient);
             if(u!=null){
+
              return    ReturnUtil.Success("登录成功", ArrayUtils.toMap(
-                        new Object [][]{ { "token",  MD5Util.string2MD5(JSON.toJSONString(u))},
+                        new Object [][]{ { "token",  Base64Utils.encrypt(JSON.toJSONString(u))},
                                 { "info",  u}}
                 ));
             }else{
