@@ -179,4 +179,14 @@ public class Case {
     public void setPageSizes(Integer pageSizes) {
         this.pageSizes = pageSizes;
     }
+
+    private Integer bedId;
+
+    public Integer getBedId() {
+        return bedId;
+    }
+
+    public void setBedId(Integer bedId) {
+        this.bedId = bedId;
+    }
 }

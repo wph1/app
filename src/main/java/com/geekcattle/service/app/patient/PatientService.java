@@ -1,5 +1,6 @@
 package com.geekcattle.service.app.patient;
 
+import com.geekcattle.model.app.ApplyBed;
 import com.geekcattle.model.app.Patient;
 import com.geekcattle.model.app.User;
 
@@ -47,6 +48,11 @@ public interface PatientService {
      * @return
      */
    List<Patient> findPatientList(User user);
+
+    /**
+     * 患者申请调换床位
+     */
+   void applyExchangeBed(ApplyBed applyBed);
 
 }
 

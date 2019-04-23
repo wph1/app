@@ -2,6 +2,7 @@ package com.geekcattle.controller.app;
 
 
 import com.alibaba.fastjson.JSON;
+import com.geekcattle.model.app.ApplyBed;
 import com.geekcattle.model.app.Case;
 import com.geekcattle.model.app.Patient;
 import com.geekcattle.model.app.User;
@@ -96,6 +97,21 @@ public class PatientController {
         modelMap.put("data",pageInfo.getList());
         return ReturnUtil.Success("加载成功", modelMap, null);
     }
+
+
+    @ApiOperation(value = "患者申请调换床位" ,  notes="患者申请调换床位")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "reason", value = "申请原因", required = true, paramType = "query", dataType = "String"),
+            @ApiImplicitParam(name = "afterBed", value = "申请需要调换到那个床位Id", required = true, paramType = "query", dataType = "Integer"),
+    })
+    @PostMapping("/applyExchangeBed")
+    @ResponseBody
+    public ModelMap applyExchangeBed(ApplyBed applyBed){
+        patientService.applyExchangeBed(applyBed);
+        return ReturnUtil.Success("请求成功");
+    }
+
+
 
 
 

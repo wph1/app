@@ -13,4 +13,12 @@
     <result column="ins_time" property="insTime" jdbcType="TIMESTAMP" />
     <result column="state" property="state" jdbcType="INTEGER" />
   </resultMap>
+
+
+  <select id="selectPatientIdList" resultType="Integer">
+    select a.patient_id  from cases a where 1=1
+    <if test="nurseId != null and nurseId != ''">
+      AND a.nurse_id = #{nurseId}
+    </if>
+  </select>
 </mapper>

@@ -2,13 +2,18 @@ package com.geekcattle.service.app.patient.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONPath;
+import com.geekcattle.mapper.app.ApplyBedMapper;
+import com.geekcattle.mapper.app.CaseMapper;
 import com.geekcattle.mapper.app.PatientMapper;
 import com.geekcattle.mapper.app.UserMapper;
+import com.geekcattle.model.app.ApplyBed;
+import com.geekcattle.model.app.Case;
 import com.geekcattle.model.app.Patient;
 import com.geekcattle.model.app.User;
 import com.geekcattle.service.app.patient.PatientService;
 import com.geekcattle.util.AppConstant;
 import com.geekcattle.util.CamelCaseUtil;
+import com.geekcattle.util.PatientThreadLocal;
 import com.github.pagehelper.PageHelper;
 import io.swagger.models.auth.In;
 import org.slf4j.Logger;
@@ -29,6 +34,10 @@ public class PatientServiceImpl implements PatientService {
     private PatientMapper patientMapper;
     @Autowired
     private  UserMapper userMapper;
+    @Autowired
+    private ApplyBedMapper applyBedMapper;
+    @Autowired
+    private CaseMapper caseMapper;
     @Override
     public Patient getPatientByNameAndPwd(Patient patient) {
 
@@ -88,6 +97,21 @@ public class PatientServiceImpl implements PatientService {
         }else{//管理员
             return    patientMapper.selectPatientCase(null,null,null);
         }
+    }
+
+    @Override
+    public void applyExchangeBed(ApplyBed applyBed) {
+        Patient patient = PatientThreadLocal.get();
+        Example caseExample = new Example(Case.class);
+        caseExample.createCriteria().andCondition("patient_id=",patient.getId());
+        List<Case> cases = caseMapper.selectByExample(caseExample);
+        if(cases!=null&&cases.size()==1){
+            Case aCase = cases.get(0);
+            applyBed.setBeforeBed(aCase.getBedId());
+        }
+        applyBed.setApplicantId(patient.getId());
+        applyBed.setInsTime(new Date());
+        applyBedMapper.insert(applyBed);
     }
 
     @Override

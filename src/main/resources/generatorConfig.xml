@@ -45,7 +45,7 @@
        <!-- <table tableName="mtd_dynamic_port"  domainObjectName="MtdDynamicPort">
             <generatedKey column="dynamicport_id" sqlStatement="Mysql" identity="true"/>
         </table>-->
-        <table tableName="doctor_advice"  domainObjectName="DoctorAdvice">
+        <table tableName="apply_bed"  domainObjectName="ApplyBed">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
     </context>

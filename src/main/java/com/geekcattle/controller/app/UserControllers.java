@@ -2,7 +2,11 @@ package com.geekcattle.controller.app;
 
 
 import com.alibaba.fastjson.JSON;
+import com.geekcattle.model.app.ApplyBed;
+import com.geekcattle.model.app.Bed;
 import com.geekcattle.model.app.User;
+import com.geekcattle.service.app.bed.ApplyBedService;
+import com.geekcattle.service.app.bed.BedService;
 import com.geekcattle.service.app.patient.PatientService;
 import com.geekcattle.service.app.user.UserService;
 import com.geekcattle.util.*;
@@ -29,6 +33,10 @@ public class UserControllers {
     private UserService userService;
     @Autowired
     private PatientService patientService;
+    @Autowired
+    private BedService bedService;
+    @Autowired
+    private ApplyBedService applyBedService;
     @ApiOperation(value = "用户登录" ,  notes="用户登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "card", value = "身份证号码", required = true, paramType = "query", dataType = "String"),
@@ -141,5 +149,95 @@ public class UserControllers {
         patientService.findPatientList(user);
         return ReturnUtil.Success("操作成功");
     }
+
+
+    @ApiOperation(value = "床位添加" ,  notes="床位添加")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "床位编码，具有唯一性", required = true, paramType = "query", dataType = "String"),
+            @ApiImplicitParam(name = "departmentId", value = "科室id", required = true, paramType = "query", dataType = "Integer"),
+    })
+    @PostMapping("/addBed")
+    @ResponseBody
+    public ModelMap addBed(Bed bed){
+        bedService.addBed(bed);
+        return ReturnUtil.Success("操作成功");
+    }
+
+    @ApiOperation(value = "床位信息更新" ,  notes="床位信息更新")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "query", dataType = "Integer"),
+            @ApiImplicitParam(name = "name", value = "床位编码", required = true, paramType = "query", dataType = "String"),
+    })
+    @PostMapping("/updateBed")
+    @ResponseBody
+    public ModelMap updateBed(Bed bed){
+        bedService.updateBedById(bed);
+        return ReturnUtil.Success("请求成功");
+    }
+
+    @ApiOperation(value = "床位信息删除" ,  notes="床位信息删除")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids", value = "主键id,多个用英文的逗号分隔，多个可以批量删除", required = true, paramType = "query", dataType = "String"),
+    })
+    @PostMapping("/delBed")
+    @ResponseBody
+    public ModelMap delBed(String ids){
+        try {
+            bedService.delBed(ids);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            return ReturnUtil.Error("请求失败");
+        }
+
+        return ReturnUtil.Success("请求成功");
+    }
+
+
+    @ApiOperation(value = "床位列表分页" ,  notes="床位列表分页")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNums", value = "当前页码，不传递，默认为1", required = true, paramType = "query", dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSizes", value = "每页条数，不传递，默认为10", required = true, paramType = "query", dataType = "Integer"),
+    })
+    @PostMapping(value = "/getBedList")
+    @ResponseBody
+    public ModelMap getBedList(Bed bed) {
+        List<Bed> lists = bedService.getPageList(bed);
+        ModelMap modelMap = new ModelMap();
+        PageInfo<Bed> pageInfo = new PageInfo<>(lists);
+        modelMap.put("total",pageInfo.getTotal());
+        modelMap.put("data",pageInfo.getList());
+        return ReturnUtil.Success("加载成功", modelMap, null);
+    }
+
+    @ApiOperation(value = "护士查询自己对应患者申请调换床位的列表,通过权限控制" ,  notes="护士查询自己对应患者申请调换床位的列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNums", value = "当前页码，不传递，默认为1", required = true, paramType = "query", dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSizes", value = "每页条数，不传递，默认为10", required = true, paramType = "query", dataType = "Integer"),
+    })
+    @PostMapping(value = "/getPatientExChangeList")
+    @ResponseBody
+    public ModelMap getPatientExChangeList(ApplyBed applyBed) {
+        List<ApplyBed> lists = applyBedService.getPageList(applyBed);
+        ModelMap modelMap = new ModelMap();
+        PageInfo<ApplyBed> pageInfo = new PageInfo<>(lists);
+        modelMap.put("total",pageInfo.getTotal());
+        modelMap.put("data",pageInfo.getList());
+        return ReturnUtil.Success("加载成功", modelMap, null);
+    }
+
+    @ApiOperation(value = "护士操作患者的申请床位" ,  notes="护士操作患者的申请床位")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "query", dataType = "Integer"),
+            @ApiImplicitParam(name = "applyState", value = "状态，2-审核通过，3-驳回", required = true, paramType = "query", dataType = "Integer"),
+            @ApiImplicitParam(name = "rejectReason", value = "驳回原因", required = true, paramType = "query", dataType = "String"),
+    })
+    @PostMapping("/operationApply")
+    @ResponseBody
+    public ModelMap operationApply(ApplyBed applyBed){
+        applyBedService.updateBedById(applyBed);
+        return ReturnUtil.Success("请求成功");
+    }
+
 
 }
