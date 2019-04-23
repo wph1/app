@@ -27,6 +27,8 @@ public class ApplyBedServiceImpl implements ApplyBedService {
     private ApplyBedMapper applyBedMapper;
     @Autowired
     private CaseMapper caseMapper;
+    @Autowired
+    private BedMapper bedMapper;
 //    @Autowired
 //    private PatientMapper patientMapper;
 //    @Autowired
@@ -137,6 +139,21 @@ public class ApplyBedServiceImpl implements ApplyBedService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateBedById(ApplyBed bed) {
+        //如果审核通过，将之前的床位设置为空，将现在的床位设置为占用
+        ApplyBed applyBed = applyBedMapper.selectByPrimaryKey(bed.getId());
+        if(2==bed.getApplyState()){
+            //将之前的床位设置为空
+            Bed beforeBed=new Bed();
+            beforeBed.setState(1);
+            beforeBed.setId(applyBed.getBeforeBed());
+            bedMapper.updateByPrimaryKeySelective(beforeBed);
+
+            Bed afterBed=new Bed();
+            afterBed.setState(2);
+            afterBed.setId(applyBed.getBeforeBed());
+            bedMapper.updateByPrimaryKeySelective(beforeBed);
+        }
+
       bed.setHandleId(UserThreadLocal.get().getId());
         applyBedMapper.updateByPrimaryKeySelective(bed);
     }

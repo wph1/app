@@ -4,6 +4,7 @@ package com.geekcattle.controller.app;
 import com.alibaba.fastjson.JSON;
 import com.geekcattle.model.app.ApplyBed;
 import com.geekcattle.model.app.Bed;
+import com.geekcattle.model.app.Case;
 import com.geekcattle.model.app.User;
 import com.geekcattle.service.app.bed.ApplyBedService;
 import com.geekcattle.service.app.bed.BedService;
@@ -239,5 +240,14 @@ public class UserControllers {
         return ReturnUtil.Success("请求成功");
     }
 
+    @ApiOperation(value = "查询对应的病例详情信息，此接口员工和患者都可以使用" ,  notes="查询对应的病例详情信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "病例主键id", required = true, paramType = "query", dataType = "Integer"),
+    })
+    @PostMapping("/findCaseDetailInfo")
+    @ResponseBody
+    public ModelMap findCaseDetailInfo(Case cases){
+        return ReturnUtil.Success("操作成功",patientService.findCaseDetailInfo(cases));
+    }
 
 }

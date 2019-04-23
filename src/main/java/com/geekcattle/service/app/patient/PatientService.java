@@ -1,10 +1,12 @@
 package com.geekcattle.service.app.patient;
 
 import com.geekcattle.model.app.ApplyBed;
+import com.geekcattle.model.app.Case;
 import com.geekcattle.model.app.Patient;
 import com.geekcattle.model.app.User;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户service
@@ -48,6 +50,13 @@ public interface PatientService {
      * @return
      */
    List<Patient> findPatientList(User user);
+
+    /**
+     *员工查询对应病例的详情信息
+     * @param cases
+     * @return
+     */
+   Map findCaseDetailInfo(Case cases);
 
     /**
      * 患者申请调换床位
