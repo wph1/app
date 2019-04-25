@@ -147,8 +147,7 @@ public class UserControllers {
     public ModelMap findPatientList(){
 //        userService.addUser(user);
         User user = UserThreadLocal.get();
-        patientService.findPatientList(user);
-        return ReturnUtil.Success("操作成功");
+        return ReturnUtil.Success("操作成功",patientService.findPatientList(user));
     }
 
 

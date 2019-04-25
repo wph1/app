@@ -72,9 +72,9 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public List findPatientList(User user) {
         if(AppConstant.getDOCTOR()==user.getType()){//医生
-            return patientMapper.selectPatientCase(user.getId(),null,null);
+            return patientMapper.selectPatientCase(String.valueOf(user.getId()),null,null);
         }else if (AppConstant.getNURSE()==user.getType()){//护士
-            return patientMapper.selectPatientCase(null,user.getId(),null);
+            return patientMapper.selectPatientCase(null,String.valueOf(user.getId()),null);
         }else if(AppConstant.getNurseHead()==user.getType()){//护士长
             //查询下面的所有护士下所属患者
             User nurseHead = userMapper.selectByPrimaryKey(user.getId());
@@ -83,9 +83,9 @@ public class PatientServiceImpl implements PatientService {
                     .andCondition("type=",AppConstant.getNURSE());
             //护士长下的所有护士
             List<User> nurseList = userMapper.selectByExample(userExample);
-            List<Integer> nurseIdList = new ArrayList();
+            List<String> nurseIdList = new ArrayList();
             if(nurseList!=null&&nurseList.size()>0){
-                nurseIdList =( List<Integer>) JSONPath.read(JSON.toJSONString(nurseList), "$.id");
+                nurseIdList =( List<String>) JSONPath.read(JSON.toJSONString(nurseList), "$.id");
             }
             return patientMapper.selectPatientCase(null,null,nurseIdList);
         }else{//管理员

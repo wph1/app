@@ -3,7 +3,9 @@ package com.geekcattle.mapper.app;
 import com.geekcattle.model.app.Patient;
 import com.geekcattle.util.CustomerMapper;
 import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,6 @@ public interface PatientMapper extends CustomerMapper<Patient> {
      * @param nurseIdList
      * @return
      */
-   List<Map> selectPatientCase(Integer doctorId, Integer nurseId,List<Integer> nurseIdList);
+   List<Map> selectPatientCase(@Param("doctorId") String doctorId, @Param("nurseId")String nurseId,  @Param("nurseIdList")List<String> nurseIdList);
 
 }
