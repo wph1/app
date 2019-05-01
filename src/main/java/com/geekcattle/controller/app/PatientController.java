@@ -29,7 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/app/patient")
 public class PatientController {
-
+//https://gitee.com/zhongmh/poi-commons/blob/tanx1.0/%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.md
     @Autowired
     private PatientService patientService;
     @Autowired
@@ -62,8 +62,13 @@ public class PatientController {
     @PostMapping("/register")
     @ResponseBody
     public ModelMap register(Patient patient){
-        patientService.register(patient);
+        try {
+            patientService.register(patient);
+        }catch (Exception e){
+            return ReturnUtil.Success(e.getMessage());
+        }
         return ReturnUtil.Success("请求成功");
+
     }
 
     @ApiOperation(value = "患者信息更新" ,  notes="患者信息更新")

@@ -31,7 +31,8 @@
             C.nurse_id,
             C.case_mark,
             C.ins_time,
-            C.state
+            C.state,
+            C.id
             FROM
               patient P
             LEFT JOIN cases C ON C.patient_id = P.id

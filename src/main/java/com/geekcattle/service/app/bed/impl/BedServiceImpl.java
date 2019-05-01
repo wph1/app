@@ -3,9 +3,11 @@ package com.geekcattle.service.app.bed.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONPath;
 import com.geekcattle.mapper.app.BedMapper;
+import com.geekcattle.mapper.app.CaseMapper;
 import com.geekcattle.mapper.app.PatientMapper;
 import com.geekcattle.mapper.app.UserMapper;
 import com.geekcattle.model.app.Bed;
+import com.geekcattle.model.app.Case;
 import com.geekcattle.model.app.Patient;
 import com.geekcattle.model.app.User;
 import com.geekcattle.service.app.bed.BedService;
@@ -28,6 +30,8 @@ public class BedServiceImpl implements BedService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private BedMapper bedMapper;
+    @Autowired
+    private CaseMapper caseMapper;
 //    @Autowired
 //    private PatientMapper patientMapper;
 //    @Autowired
@@ -111,6 +115,11 @@ public class BedServiceImpl implements BedService {
     @Transactional(rollbackFor = Exception.class)
     public void updateBedById(Bed bed) {
         bedMapper.updateByPrimaryKeySelective(bed);
+    }
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateCaseById(Case cases) {
+        caseMapper.updateByPrimaryKeySelective(cases);
     }
 
     @Override

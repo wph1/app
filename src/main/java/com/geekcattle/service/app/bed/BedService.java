@@ -1,6 +1,7 @@
 package com.geekcattle.service.app.bed;
 
 import com.geekcattle.model.app.Bed;
+import com.geekcattle.model.app.Case;
 import com.geekcattle.model.app.DoctorAdvice;
 
 import java.util.List;
@@ -41,6 +42,12 @@ public interface BedService {
      * @param bed
      */
     void  updateBedById(Bed bed);
+
+    /**
+     * 更新病例信息，通过主键id
+     * @param cases
+     */
+    void  updateCaseById(Case cases);
 
     /**
      * 通过主键id删除

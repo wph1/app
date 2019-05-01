@@ -6,10 +6,8 @@ import com.geekcattle.mapper.app.*;
 import com.geekcattle.model.app.*;
 import com.geekcattle.service.app.patient.PatientService;
 import com.geekcattle.util.AppConstant;
-import com.geekcattle.util.CamelCaseUtil;
 import com.geekcattle.util.PatientThreadLocal;
 import com.github.pagehelper.PageHelper;
-import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +29,8 @@ public class PatientServiceImpl implements PatientService {
     @Autowired
     private CaseMapper caseMapper;
     @Autowired
+    private BedMapper bedMapper;
+    @Autowired
     private DoctorAdviceMapper doctorAdviceMapper;
     @Override
     public Patient getPatientByNameAndPwd(Patient patient) {
@@ -50,7 +50,42 @@ public class PatientServiceImpl implements PatientService {
     public void register(Patient patient) {
         patient.setInsTime(new Date());
         patient.setPassword("123456");
-        patientMapper.insert(patient);
+        patient.setType(4);
+        //生成病例，医生、护士、床位随机分配
+        Case cases = new Case();
+        Example doctorExample = new Example(User.class);
+        doctorExample.createCriteria().andCondition("department=",patient.getDepartment())
+                .andCondition("type=",1);//
+        List<User> doctors = userMapper.selectByExample(doctorExample);
+        if(doctors!=null&&doctors.size()==0){
+            throw  new RuntimeException("该科室没有医生");
+        }
+        int i = new Random().nextInt(doctors.size());
+        cases.setDoctorId(doctors.get(i).getId());
+        Example nurseExample = new Example(User.class);
+        nurseExample.createCriteria().andCondition("department=",patient.getDepartment())
+                .andCondition("type=",2);
+        List<User> nurse = userMapper.selectByExample(nurseExample);
+        if(nurse!=null&&nurse.size()==0){
+            throw  new RuntimeException("该科室没有护士");
+        }
+        int j = new Random().nextInt(nurse.size());
+        cases.setNurseId(nurse.get(j).getId());
+        Example bedExample = new Example(Bed.class);
+        bedExample.createCriteria().andCondition("department_id=",patient.getDepartment())
+                .andCondition("state=",1);
+        List<Bed> beds = bedMapper.selectByExample(bedExample);
+        if(beds!=null&&beds.size()==0){
+            throw  new RuntimeException("该科室没有空床位");
+        }
+        int z = new Random().nextInt(beds.size());
+        cases.setBedId(beds.get(z).getId());
+        cases.setInsTime(new Date());
+        int patientId = patientMapper.insert(patient);
+        cases.setPatientId(patientId);
+        caseMapper.insert(cases);
+
+
     }
 
     @Override

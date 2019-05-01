@@ -149,7 +149,7 @@ public class UserControllers {
         User user = UserThreadLocal.get();
         return ReturnUtil.Success("操作成功",patientService.findPatientList(user));
     }
-
+//    https://github.com/tannongchun/bigdataimport
 
     @ApiOperation(value = "床位添加" ,  notes="床位添加")
     @ApiImplicitParams({
@@ -174,6 +174,19 @@ public class UserControllers {
         bedService.updateBedById(bed);
         return ReturnUtil.Success("请求成功");
     }
+
+    @ApiOperation(value = "病例信息更新" ,  notes="病例信息更新")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "query", dataType = "Integer"),
+            @ApiImplicitParam(name = "caseMark", value = "病例内容", required = true, paramType = "query", dataType = "String"),
+    })
+    @PostMapping("/updateCaseById")
+    @ResponseBody
+    public ModelMap updateCase(Case cases){
+        bedService.updateCaseById(cases);
+        return ReturnUtil.Success("请求成功");
+    }
+
 
     @ApiOperation(value = "床位信息删除" ,  notes="床位信息删除")
     @ApiImplicitParams({
