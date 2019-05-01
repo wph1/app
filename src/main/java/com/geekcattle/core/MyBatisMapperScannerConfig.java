@@ -32,6 +32,8 @@ public class MyBatisMapperScannerConfig {
         properties.setProperty("mappers", "com.geekcattle.util.CustomerMapper");
         properties.setProperty("notEmpty", "false");
         properties.setProperty("IDENTITY", "MYSQL");
+        //主键UUID回写方法执行顺序,默认AFTER,可选值为(BEFORE|AFTER)
+        properties.setProperty("ORDER","AFTER");
         mapperScannerConfigurer.setProperties(properties);
         return mapperScannerConfigurer;
     }

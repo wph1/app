@@ -65,7 +65,7 @@ public class PatientController {
         try {
             patientService.register(patient);
         }catch (Exception e){
-            return ReturnUtil.Success(e.getMessage());
+            return ReturnUtil.Error(e.getMessage());
         }
         return ReturnUtil.Success("请求成功");
 

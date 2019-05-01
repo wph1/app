@@ -53,6 +53,7 @@ public class PatientServiceImpl implements PatientService {
         patient.setType(4);
         //生成病例，医生、护士、床位随机分配
         Case cases = new Case();
+        cases.setState(1);
         Example doctorExample = new Example(User.class);
         doctorExample.createCriteria().andCondition("department=",patient.getDepartment())
                 .andCondition("type=",1);//
@@ -81,8 +82,8 @@ public class PatientServiceImpl implements PatientService {
         int z = new Random().nextInt(beds.size());
         cases.setBedId(beds.get(z).getId());
         cases.setInsTime(new Date());
-        int patientId = patientMapper.insert(patient);
-        cases.setPatientId(patientId);
+        int patientId = patientMapper.insertSelective(patient);
+        cases.setPatientId(patient.getId());
         caseMapper.insert(cases);
 
 
